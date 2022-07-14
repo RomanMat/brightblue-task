@@ -1,18 +1,27 @@
-import cv2 as cv
-
-# Read img and show it for endless amount of time
-
-# img = cv.imread("imgs/man_1.jpg")
-# cv.imshow("Man #1",img)
-# cv.waitKey(0)
+import cv2
 
 
-captcure = cv.VideoCapture(0) 
-while True:
-    isTrue, frame = captcure.read()
-    cv.imshow("Camera #0", frame)
-    if cv.waitKey(20) & 0xFF==ord("c"):
-        break
+def capture_camera(cam_port: int) -> None:
+    """Turn on webcam by camera port id
+    and capture video from it. Could be stoped after using 'q' key."""
 
-captcure.release()
-cv.destroyAllWindows()
+    cam = cv2.VideoCapture(cam_port)
+
+    while cam.isOpened():
+        ret, frame = cam.read()
+        cv2.imshow("Camera", frame)
+
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+
+    cam.release()
+
+
+def main() -> None:
+    capture_camera(3)
+    cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+
+    main()
